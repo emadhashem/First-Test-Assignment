@@ -37,14 +37,17 @@ jobs:
   
   docker:
     runs-on: ubuntu-latest
-    needs: build  # Ensure this job runs after build
-    steps:
-      # Step 1: Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: Build Docker image
-        run: docker build . firstAssignment
-        
-      - name: Run Docker container
-        run: docker run -d --name firstAssignment -p 5173:5173 firstAssignment
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: docker build -t first-assignment .
+
+    - name: Create and run container
+      run: |
+        docker create --name first-assignment-container first-assignment
+        docker start first-assignment-container
+        docker ps
+        docker stop first-assignment-container
